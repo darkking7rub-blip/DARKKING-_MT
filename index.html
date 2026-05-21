@@ -25,7 +25,7 @@ body{
     background:#090909;
 }
 
-/* VIDEO DE FONDO */
+/* ── VIDEO DE FONDO (código 1: sin blur, sin overlay, sin scale) ── */
 #bg-video {
     position: fixed;
     inset: 0;
@@ -36,15 +36,11 @@ body{
     transform: scale(1);
 }
 
-.video-overlay {
-    display: none;
-}
+/* overlay y blur desactivados — tal como estaban en el código 1 */
+.video-overlay { display: none; }
+.video-blur    { display: none; }
 
-.video-blur {
-    display: none;
-}
-
-/* PARTÍCULAS */
+/* ── PARTÍCULAS ── */
 .particles {
     position: fixed;
     inset: 0;
@@ -81,7 +77,7 @@ body{
     100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
 }
 
-/* AMBIENT GLOW */
+/* ── AMBIENT GLOW ── */
 .glow{
     position:fixed;
     width:600px;
@@ -105,7 +101,7 @@ body{
 
 .hero, .tabs, .section, footer { position: relative; z-index: 1; }
 
-/* HERO */
+/* ── HERO ── */
 .hero{
     min-height:100vh;
     display:flex;
@@ -120,7 +116,6 @@ body{
     animation:fadeUp 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* BADGE */
 .badge{
     display:inline-block;
     padding:12px 28px;
@@ -157,104 +152,35 @@ body{
     50%       { box-shadow: 0 0 40px rgba(255,160,0,.4); }
 }
 
-/* TÍTULO CON CAMBIO DE COLOR Y GLOW */
 .hero h1{
     font-size:clamp(3rem,9vw,6.5rem);
     font-weight:800;
     line-height:1;
-    background:linear-gradient(135deg, #ffe4a0, #ffb347, #ff8c00, #ff5e00, #ff8c00, #ffb347, #ffe4a0);
+    background:linear-gradient(135deg,#ffd27d 0%,#ff9500 40%,#ff5e00 70%,#ff8c00 100%);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
-    background-size: 300% 300%;
     margin-bottom:20px;
-    animation: titleColorShift 6s ease-in-out infinite, titleGlow 3s ease-in-out infinite;
+    animation: gradientShift 8s ease infinite;
+    background-size: 200% 200%;
 }
 
-@keyframes titleColorShift {
+@keyframes gradientShift {
     0%   { background-position: 0% 50%; }
     50%  { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
 
-@keyframes titleGlow {
-    0%, 100% { filter: drop-shadow(0 0 10px rgba(255,160,0,.4)) drop-shadow(0 0 25px rgba(255,100,0,.2)); }
-    50%       { filter: drop-shadow(0 0 22px rgba(255,190,0,.75)) drop-shadow(0 0 45px rgba(255,120,0,.45)); }
+.hero p{
+    color:#ddd;
+    font-size:1.15rem;
+    line-height:1.9;
+    max-width:700px;
+    margin:auto;
+    animation:fadeUp 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
 }
 
-/* MARCO CRISTAL DEL PÁRRAFO */
-.hero-desc {
-    position: relative;
-    margin: 28px auto 0;
-    max-width: 680px;
-    padding: 28px 36px;
-    border-radius: 24px;
-    background: rgba(255,255,255,.07);
-    border: 1px solid rgba(255,255,255,.18);
-    backdrop-filter: blur(30px) saturate(170%);
-    box-shadow:
-        0 8px 32px rgba(0,0,0,.25),
-        inset 0 1.5px 0 rgba(255,255,255,.3),
-        inset 0 -1px 0 rgba(255,255,255,.05),
-        0 0 0 1px rgba(255,255,255,.05);
-    animation: fadeUp 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
-    overflow: hidden;
-}
-
-/* Borde degradado cristal animado */
-.hero-desc::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1.5px;
-    background: linear-gradient(
-        135deg,
-        rgba(255,255,255,.75) 0%,
-        rgba(255,210,120,.55) 20%,
-        rgba(255,149,0,.35) 45%,
-        rgba(255,255,255,.08) 65%,
-        rgba(255,220,150,.5) 85%,
-        rgba(255,255,255,.7) 100%
-    );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    animation: borderShimmer 5s linear infinite;
-}
-
-@keyframes borderShimmer {
-    0%   { filter: hue-rotate(0deg) brightness(1); }
-    50%  { filter: hue-rotate(15deg) brightness(1.2); }
-    100% { filter: hue-rotate(0deg) brightness(1); }
-}
-
-/* Reflejo líquido superior */
-.hero-desc::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 45%;
-    background: linear-gradient(180deg,
-        rgba(255,255,255,.2) 0%,
-        rgba(255,255,255,.06) 50%,
-        transparent 100%
-    );
-    border-radius: 24px 24px 0 0;
-    pointer-events: none;
-}
-
-.hero-desc p {
-    color: rgba(255,255,255,.93);
-    font-size: 1.1rem;
-    line-height: 1.9;
-    position: relative;
-    z-index: 1;
-}
-
-/* BOTÓN HERO */
 .enter-btn{
-    margin-top:35px;
+    margin-top:45px;
     display:inline-flex;
     align-items:center;
     gap:12px;
@@ -294,7 +220,7 @@ body{
 
 .enter-btn:hover::before { left: 100%; }
 
-/* TABS */
+/* ── TABS ── */
 .tabs{
     position:sticky;
     top:0;
@@ -304,7 +230,7 @@ body{
     overflow:auto;
     padding:20px;
     backdrop-filter:blur(30px) saturate(150%);
-    background:rgba(0,0,0,.35);
+    background:rgba(0,0,0,.4);
     border-bottom:1px solid rgba(255,255,255,.1);
 }
 
@@ -314,53 +240,33 @@ body{
     border:none;
     padding:14px 26px;
     border-radius:16px;
-    background: rgba(255,255,255,.07);
-    backdrop-filter: blur(20px) saturate(150%);
+    background:rgba(255,255,255,.06);
     color:white;
     cursor:pointer;
     transition:all .4s cubic-bezier(0.22, 1, 0.36, 1);
     white-space:nowrap;
     font-weight:500;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
+    backdrop-filter:blur(20px);
+    border: 1px solid rgba(255,255,255,.08);
     position: relative;
     overflow: hidden;
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.2),
-        0 4px 15px rgba(0,0,0,.15);
-    border: 1px solid rgba(255,255,255,.12);
-}
-
-/* Reflejo cristal en tabs */
-.tab::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 45%;
-    background: linear-gradient(180deg, rgba(255,255,255,.18) 0%, transparent 100%);
-    border-radius: inherit;
-    pointer-events: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
 }
 
 .tab:hover{
     transform:translateY(-3px);
-    background: rgba(255,255,255,.13);
-    box-shadow:
-        0 8px 25px rgba(255,140,0,.2),
-        inset 0 1px 0 rgba(255,255,255,.3);
-    border-color: rgba(255,255,255,.2);
+    background:rgba(255,255,255,.12);
+    box-shadow: 0 8px 25px rgba(255,140,0,.2);
 }
 
 .tab.active{
-    background: linear-gradient(135deg, rgba(255,165,0,.85), rgba(255,80,0,.85));
-    box-shadow:
-        0 8px 30px rgba(255,140,0,.5),
-        inset 0 2px 10px rgba(255,255,255,.3),
-        inset 0 -1px 0 rgba(0,0,0,.1);
-    border: 1px solid rgba(255,255,255,.35);
+    background:linear-gradient(135deg,#ff9500,#ff5e00);
+    box-shadow:0 8px 30px rgba(255,140,0,.5), inset 0 2px 10px rgba(255,255,255,.3);
+    border: 1px solid rgba(255,255,255,.3);
 }
 
-/* SECTIONS */
+/* ── SECTIONS ── */
 .section{
     display:none;
     padding:80px 20px;
@@ -386,87 +292,57 @@ body{
 
 .section-title p{ color:#ccc; font-size: 1.05rem; }
 
-/* CARD CRYSTAL APPLE */
+/* ── CARD ── */
 .card{
     position:relative;
     overflow:hidden;
     padding:45px;
     border-radius:32px;
-    /* Fondo cristal translúcido */
-    background: linear-gradient(
-        145deg,
-        rgba(255,255,255,.12) 0%,
-        rgba(255,255,255,.06) 50%,
-        rgba(255,180,60,.05) 100%
-    );
-    border:1px solid rgba(255,255,255,.2);
-    backdrop-filter:blur(40px) saturate(180%);
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.15);
+    backdrop-filter:blur(30px) saturate(140%);
     text-align:center;
     transition:all .5s cubic-bezier(0.22, 1, 0.36, 1);
-    box-shadow:
-        0 8px 32px rgba(0,0,0,.3),
-        inset 0 2px 0 rgba(255,255,255,.35),
-        inset 0 -1px 0 rgba(255,255,255,.05),
-        0 0 0 1px rgba(255,255,255,.05);
+    box-shadow: 0 8px 32px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.2);
 }
 
-/* Borde degradado animado cristal */
 .card::before{
     content:'';
     position:absolute;
     inset:0;
     border-radius:inherit;
     padding:1.5px;
-    background:linear-gradient(
-        135deg,
-        rgba(255,255,255,.8) 0%,
-        rgba(255,220,140,.6) 20%,
-        rgba(255,149,0,.4) 40%,
-        rgba(255,255,255,.1) 60%,
-        rgba(255,210,100,.5) 80%,
-        rgba(255,255,255,.75) 100%
-    );
+    background:linear-gradient(135deg,
+        rgba(255,255,255,.6) 0%,
+        rgba(255,200,100,.4) 25%,
+        rgba(255,149,0,.3) 50%,
+        rgba(255,94,0,.2) 75%,
+        rgba(255,255,255,.4) 100%);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite:xor;
     mask-composite:exclude;
-    animation: crystalBorder 6s linear infinite;
+    animation: borderRotate 6s linear infinite;
 }
 
-/* Reflejo líquido superior — sello Crystal Apple */
 .card::after {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 48%;
-    background: linear-gradient(
-        180deg,
-        rgba(255,255,255,.22) 0%,
-        rgba(255,255,255,.07) 45%,
-        transparent 100%
-    );
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,.15) 0%, rgba(255,255,255,.05) 40%, transparent 100%);
     border-radius: 32px 32px 0 0;
     pointer-events: none;
 }
 
-@keyframes crystalBorder {
-    0%   { filter: hue-rotate(0deg) brightness(1); }
-    50%  { filter: hue-rotate(20deg) brightness(1.3); }
-    100% { filter: hue-rotate(0deg) brightness(1); }
+@keyframes borderRotate {
+    0%   { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
 }
 
 .card:hover{
-    transform:translateY(-12px) scale(1.02);
-    box-shadow:
-        0 30px 60px rgba(255,140,0,.2),
-        inset 0 2px 0 rgba(255,255,255,.45),
-        0 0 0 1px rgba(255,255,255,.1);
-    border-color: rgba(255,255,255,.3);
-    background: linear-gradient(
-        145deg,
-        rgba(255,255,255,.16) 0%,
-        rgba(255,255,255,.08) 50%,
-        rgba(255,180,60,.08) 100%
-    );
+    transform:translateY(-10px) scale(1.02);
+    box-shadow: 0 25px 60px rgba(255,140,0,.25), inset 0 1px 0 rgba(255,255,255,.3);
+    border-color: rgba(255,255,255,.25);
 }
 
 .card-icon{
@@ -475,8 +351,6 @@ body{
     display: inline-block;
     animation: iconFloat 3s ease-in-out infinite;
     filter: drop-shadow(0 5px 15px rgba(255,140,0,.4));
-    position: relative;
-    z-index: 1;
 }
 
 @keyframes iconFloat {
@@ -490,19 +364,10 @@ body{
     background:linear-gradient(135deg,#fff,#ffd27d);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
-    position: relative;
-    z-index: 1;
 }
 
-.card p{
-    color:rgba(255,255,255,.88);
-    line-height:1.9;
-    font-size: 1.05rem;
-    position: relative;
-    z-index: 1;
-}
+.card p{ color:#ddd; line-height:1.9; font-size: 1.05rem; }
 
-/* BOTÓN DRIVE */
 .drive-btn{
     margin-top:35px;
     display:inline-block;
@@ -514,13 +379,10 @@ body{
     font-weight:600;
     transition:all .4s cubic-bezier(0.22, 1, 0.36, 1);
     border: 1px solid rgba(255,255,255,.3);
-    box-shadow:
-        0 8px 30px rgba(255,140,0,.3),
-        inset 0 2px 8px rgba(255,255,255,.3);
+    box-shadow: 0 8px 30px rgba(255,140,0,.3), inset 0 2px 8px rgba(255,255,255,.3);
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(10px);
-    z-index: 1;
 }
 
 .drive-btn::before {
@@ -539,7 +401,7 @@ body{
 
 .drive-btn:hover::before { left: 100%; }
 
-/* SOCIALS CRYSTAL APPLE */
+/* ── SOCIALS ── */
 .social-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
@@ -552,68 +414,44 @@ body{
     text-align:center;
     text-decoration:none;
     color:white;
-    background: linear-gradient(
-        145deg,
-        rgba(255,255,255,.12) 0%,
-        rgba(255,255,255,.05) 60%,
-        rgba(255,160,60,.04) 100%
-    );
-    backdrop-filter:blur(35px) saturate(180%);
-    border:1px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,.06);
+    backdrop-filter:blur(25px) saturate(150%);
+    border:1px solid rgba(255,255,255,.12);
     transition:all .5s cubic-bezier(0.22, 1, 0.36, 1);
     position: relative;
     overflow: hidden;
-    box-shadow:
-        0 4px 20px rgba(0,0,0,.2),
-        inset 0 2px 0 rgba(255,255,255,.3),
-        inset 0 -1px 0 rgba(255,255,255,.05);
+    box-shadow: 0 4px 20px rgba(0,0,0,.2);
 }
 
-/* Borde cristal */
 .social::before {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: inherit;
     padding: 1.5px;
-    background: linear-gradient(
-        135deg,
-        rgba(255,255,255,.6) 0%,
-        rgba(255,200,100,.4) 35%,
-        rgba(255,255,255,.08) 60%,
-        rgba(255,220,140,.5) 85%,
-        rgba(255,255,255,.6) 100%
-    );
+    background: linear-gradient(135deg, rgba(255,255,255,.4), rgba(255,149,0,.3));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
-    opacity: 0.6;
+    opacity: 0;
     transition: opacity 0.4s;
 }
 
-/* Reflejo líquido */
 .social::after {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 45%;
-    background: linear-gradient(180deg, rgba(255,255,255,.2) 0%, rgba(255,255,255,.05) 50%, transparent 100%);
+    background: linear-gradient(180deg, rgba(255,255,255,.12) 0%, transparent 100%);
     border-radius: 28px 28px 0 0;
     pointer-events: none;
 }
 
 .social:hover{
-    transform:translateY(-10px) scale(1.04);
-    background: linear-gradient(
-        145deg,
-        rgba(255,255,255,.18) 0%,
-        rgba(255,255,255,.09) 60%,
-        rgba(255,160,60,.07) 100%
-    );
-    box-shadow:
-        0 25px 50px rgba(255,140,0,.2),
-        inset 0 2px 0 rgba(255,255,255,.4);
-    border-color: rgba(255,255,255,.28);
+    transform:translateY(-8px) scale(1.03);
+    background:rgba(255,255,255,.12);
+    box-shadow: 0 20px 50px rgba(255,140,0,.2), inset 0 1px 0 rgba(255,255,255,.2);
+    border-color: rgba(255,255,255,.2);
 }
 
 .social:hover::before { opacity: 1; }
@@ -624,8 +462,6 @@ body{
     display: inline-block;
     transition: transform 0.4s;
     filter: drop-shadow(0 4px 10px rgba(255,140,0,.3));
-    position: relative;
-    z-index: 1;
 }
 
 .social:hover .icon { transform: scale(1.2) translateY(-5px); }
@@ -636,11 +472,9 @@ body{
     background: linear-gradient(135deg, #fff, #ffd27d);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    position: relative;
-    z-index: 1;
 }
 
-/* FOOTER */
+/* ── FOOTER ── */
 footer{
     padding:60px 20px;
     text-align:center;
@@ -675,7 +509,6 @@ footer::before {
 
 @media (max-width: 768px) {
     .card { padding: 30px 20px; }
-    .hero-desc { padding: 22px 22px; }
     .social-grid { grid-template-columns: 1fr; }
     .tabs { padding: 15px; }
     .tab { padding: 12px 18px; font-size: 0.9rem; }
@@ -686,7 +519,7 @@ footer::before {
 
 <body>
 
-<!-- VIDEO DE FONDO -->
+<!-- VIDEO DE FONDO — fuente del código 1, sin blur ni overlay -->
 <video autoplay muted loop playsinline id="bg-video">
     <source src="https://raw.githubusercontent.com/darkking7rub-blip/D/afe6b356b47c7fa5c93f35ebd6962f86ce0fd57a/Nuevo%20proyecto%2044%20%5B38FF1C6%5D.mp4" type="video/mp4">
 </video>
@@ -694,7 +527,7 @@ footer::before {
 <div class="video-overlay"></div>
 <div class="video-blur"></div>
 
-<!-- Partículas -->
+<!-- Partículas flotantes -->
 <div class="particles">
     <div class="particle"></div>
     <div class="particle"></div>
@@ -712,17 +545,17 @@ footer::before {
 <div class="glow"></div>
 <div class="glow"></div>
 
+<!-- HERO -->
 <section class="hero">
 <div class="hero-content">
     <div class="badge">DARK KING</div>
     <h1>Mushoku Tensei</h1>
-    <div class="hero-desc">
-        <p>Bienvenido al lugar donde podrás encontrar contenido relacionado con Mushoku Tensei en una experiencia visual premium (SEGÚN YO) 😎</p>
-    </div>
+    <p>Bienvenido al lugar donde podrás encontrar contenido relacionado con Mushoku Tensei en una experiencia visual premium (SEGÚN YO) 😎</p>
     <a href="#tabs" class="enter-btn">Explorar Contenido ✨</a>
 </div>
 </section>
 
+<!-- TABS -->
 <div class="tabs" id="tabs">
     <button class="tab active" onclick="showSection('manga',this)">📖 Manga</button>
     <button class="tab" onclick="showSection('anime',this)">📺 Anime</button>
@@ -740,4 +573,86 @@ footer::before {
     <div class="card-icon">📁</div>
     <h3>Google Drive Manga</h3>
     <p>Accede al contenido organizado del manga de Mushoku Tensei.</p>
-    <a class="drive-btn" href="https://drive.google.com/drive/folders/1
+    <a class="drive-btn" href="https://drive.google.com/drive/folders/1-WikTKANrBp5yPReu_zg2EhaTCePajiS" target="_blank" rel="noopener noreferrer">Abrir Drive</a>
+</div>
+</section>
+
+<!-- ANIME -->
+<section class="section" id="anime">
+<div class="section-title">
+    <h2>📺 Anime</h2>
+    <p>Contenido del anime de Mushoku Tensei</p>
+</div>
+<div class="card reveal">
+    <div class="card-icon">🎬</div>
+    <h3>Google Drive Anime</h3>
+    <p>Accede al contenido organizado del anime de Mushoku Tensei.</p>
+    <a class="drive-btn" href="https://drive.google.com/drive/folders/16lZPEr3RQZRY9-KpDyL-hQVk6fBdAd-V" target="_blank" rel="noopener noreferrer">Abrir Drive</a>
+</div>
+</section>
+
+<!-- NOVELA -->
+<section class="section" id="novela">
+<div class="section-title">
+    <h2>📚 Novela Ligera</h2>
+    <p>Contenido de la novela ligera</p>
+</div>
+<div class="card reveal">
+    <div class="card-icon">✨</div>
+    <h3>Google Drive Novela Ligera</h3>
+    <p>Accede al contenido organizado de la novela ligera.</p>
+    <a class="drive-btn" href="https://drive.google.com/drive/folders/1FGEn7YL7TEhOX5WpQmuSs7xiWaE03-WS" target="_blank" rel="noopener noreferrer">Abrir Drive</a>
+</div>
+</section>
+
+<!-- REDES -->
+<section class="section" id="redes">
+<div class="section-title">
+    <h2>🌐 DARK KING</h2>
+    <p>Redes sociales y comunidad</p>
+</div>
+<div class="social-grid">
+    <a href="https://www.tiktok.com/@dark.king1101?_r=1&_t=ZS-96XeCS8tw3h" target="_blank" rel="noopener noreferrer" class="social reveal">
+        <div class="icon">🎵</div>
+        <h3>TikTok</h3>
+    </a>
+    <a href="https://youtube.com/@darkking-l9r?si=uUdP_WMtIYo_X9-0" target="_blank" rel="noopener noreferrer" class="social reveal">
+        <div class="icon">▶️</div>
+        <h3>YouTube</h3>
+    </a>
+</div>
+</section>
+
+<footer>
+    <p>DARK KING © 2026</p>
+</footer>
+
+<script>
+function showSection(sectionId, btn){
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+
+    setTimeout(() => {
+        const reveals = document.querySelectorAll('.section.active .reveal');
+        reveals.forEach((el, index) => {
+            el.style.transitionDelay = (index * 0.1) + 's';
+            el.classList.remove('active');
+            void el.offsetWidth;
+            el.classList.add('active');
+        });
+    }, 50);
+}
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('active');
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
