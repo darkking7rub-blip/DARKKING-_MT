@@ -1,0 +1,1959 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mushoku Tensei — DARK KING</title>
+<meta name="description" content="Fansite no oficial de Mushoku Tensei. Explora el manga, anime, novela ligera y únete a la comunidad Dark King.">
+<meta property="og:title" content="Mushoku Tensei — Dark King">
+<meta property="og:description" content="Fansite no oficial de Mushoku Tensei. Explora el manga, anime, novela ligera y únete a la comunidad Dark King.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════
+   CSS @LAYER — Cascade architecture
+═══════════════════════════════════════════ */
+@layer reset, tokens, base, components, utilities;
+
+@layer tokens {
+/* ═══════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════ */
+:root {
+  --gold-0: #fff8e8;
+  --gold-1: #fde68a;
+  --gold-2: #fbbf24;
+  --gold-3: #d97706;
+  --gold-4: #92400e;
+  --ember: #ff6b00;
+  --blood: #7f1d1d;
+
+  --glass-bg: rgba(255,255,255,0.042);
+  --glass-bg-h: rgba(255,255,255,0.075);
+  --glass-border: rgba(255,255,255,0.11);
+  --glass-border-h: rgba(251,191,36,0.32);
+  --glass-blur: blur(48px) saturate(200%);
+
+  --shadow-sm: 0 2px 8px rgba(0,0,0,.3), 0 1px 3px rgba(0,0,0,.2);
+  --shadow-md: 0 8px 32px rgba(0,0,0,.4), 0 3px 10px rgba(0,0,0,.25);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,.5), 0 8px 20px rgba(0,0,0,.3);
+  --shadow-xl: 0 40px 100px rgba(0,0,0,.6), 0 16px 40px rgba(0,0,0,.35);
+
+  --font-display: 'Cinzel Decorative', serif;
+  --font-heading: 'Cinzel', serif;
+  --font-body: 'Crimson Pro', serif;
+
+  /* Typographic scale */
+  --text-2xs: 0.60rem;
+  --text-xs:  0.65rem;
+  --text-sm:  0.72rem;
+  --text-md:  0.84rem;
+  --text-base: 1rem;
+  --text-lg:  1.1rem;
+  --text-xl:  1.4rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.2rem;
+
+  --radius-card: 20px;
+  --radius-btn: 999px;
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+}
+} /* end @layer tokens */
+
+@layer utilities {
+/* ═══════════════════════════════════════════
+   UTILITY — Gradient text (replaces 6× inline repetitions)
+═══════════════════════════════════════════ */
+.text-gradient-gold {
+  background: linear-gradient(135deg, #fff8e8, #fbbf24, #d97706);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-gradient-gold--display {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.text-gradient-gold--xl {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.card-prose {
+  color: rgba(255,255,255,.6);
+  font-size: var(--text-lg);
+  font-style: italic;
+  max-width: 520px;
+  margin: 0 auto 28px;
+  line-height: 1.85;
+}
+} /* end @layer utilities */
+
+/* ═══════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════ */
+*, *::before, *::after {
+  margin: 0; padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: #05050a;
+  color: #fff;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  cursor: default;
+}
+
+/* ═══════════════════════════════════════════
+   CURSOR PERSONALIZADO
+═══════════════════════════════════════════ */
+.cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  background: var(--gold-2);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .25s, height .25s, background .25s, opacity .25s;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(251,191,36,.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all .12s ease;
+}
+body:not(:hover) .cursor, body:not(:hover) .cursor-ring { opacity: 0; }
+/* Note: cursor size on hover is handled via JS mouseenter/mouseleave */
+
+/* ═══════════════════════════════════════════
+   FONDO — Canvas animado
+═══════════════════════════════════════════ */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -5;
+  width: 100%; height: 100%;
+}
+
+#bg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -4;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 40%, rgba(5,5,10,.6) 0%, rgba(5,5,10,.92) 100%),
+    linear-gradient(180deg, rgba(5,5,10,.8) 0%, rgba(5,5,10,.2) 25%, rgba(5,5,10,.2) 75%, rgba(5,5,10,.9) 100%);
+}
+
+/* Noise grain */
+#bg-grain {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  opacity: 0.035;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* Orbs de ambiente */
+.orbs {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  overflow: hidden;
+}
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  animation: orbDrift ease-in-out infinite;
+}
+.orb-1 { width: 600px; height: 600px; top: -200px; left: -150px; background: radial-gradient(circle, rgba(217,119,6,.15) 0%, transparent 65%); animation-duration: 18s; }
+.orb-2 { width: 500px; height: 500px; bottom: -200px; right: -120px; background: radial-gradient(circle, rgba(127,29,29,.18) 0%, transparent 65%); animation-duration: 22s; animation-delay: 7s; }
+.orb-3 { width: 350px; height: 350px; top: 45%; left: 50%; background: radial-gradient(circle, rgba(251,191,36,.09) 0%, transparent 65%); animation-duration: 28s; animation-delay: 3s; }
+
+@keyframes orbDrift {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(-40px,-60px) scale(1.1); }
+  66% { transform: translate(35px, 30px) scale(0.92); }
+}
+
+/* ═══════════════════════════════════════════
+   PARTÍCULAS ASCENDENTES
+═══════════════════════════════════════════ */
+.sparks {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.spark {
+  position: absolute;
+  border-radius: 50%;
+  animation: sparkRise linear infinite;
+}
+.spark::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: inherit;
+  filter: blur(3px);
+  opacity: .5;
+}
+
+.spark:nth-child(1)  { width:3px;height:3px; left:5%;  background:rgba(251,191,36,.8); animation-duration:20s; }
+.spark:nth-child(2)  { width:2px;height:2px; left:15%; background:rgba(255,140,0,.6);  animation-duration:26s; animation-delay:4s; }
+.spark:nth-child(3)  { width:4px;height:4px; left:28%; background:rgba(251,191,36,.9); animation-duration:18s; animation-delay:8s; }
+.spark:nth-child(4)  { width:2px;height:2px; left:42%; background:rgba(217,119,6,.7);  animation-duration:22s; animation-delay:2s; }
+.spark:nth-child(5)  { width:3px;height:3px; left:58%; background:rgba(251,191,36,.8); animation-duration:30s; animation-delay:5s; }
+.spark:nth-child(6)  { width:2px;height:2px; left:70%; background:rgba(255,107,0,.6);  animation-duration:19s; animation-delay:10s; }
+.spark:nth-child(7)  { width:4px;height:4px; left:82%; background:rgba(251,191,36,.7); animation-duration:24s; animation-delay:1s; }
+.spark:nth-child(8)  { width:2px;height:2px; left:92%; background:rgba(217,119,6,.8);  animation-duration:21s; animation-delay:6s; }
+.spark:nth-child(9)  { width:3px;height:3px; left:35%; background:rgba(251,191,36,.6); animation-duration:27s; animation-delay:13s; }
+.spark:nth-child(10) { width:2px;height:2px; left:65%; background:rgba(255,140,0,.7);  animation-duration:23s; animation-delay:9s; }
+.spark:nth-child(11) { width:3px;height:3px; left:50%; background:rgba(251,191,36,.8); animation-duration:16s; animation-delay:3s; }
+.spark:nth-child(12) { width:2px;height:2px; left:78%; background:rgba(217,119,6,.6);  animation-duration:29s; animation-delay:15s; }
+
+@keyframes sparkRise {
+  0%   { transform: translateY(105vh) scale(.4) rotate(0deg); opacity:0; }
+  6%   { opacity:1; }
+  94%  { opacity:1; }
+  100% { transform: translateY(-10vh) scale(1.2) rotate(180deg); opacity:0; }
+}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 60px 24px 80px;
+  overflow: hidden;
+}
+
+/* Rune circle decorativa */
+.hero-rune {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  border: 1px solid rgba(251,191,36,.08);
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  animation: runeSpin 60s linear infinite;
+  pointer-events: none;
+}
+.hero-rune::before {
+  content: '';
+  position: absolute;
+  inset: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(251,191,36,.06);
+  animation: runeSpin 40s linear infinite reverse;
+}
+.hero-rune::after {
+  content: '';
+  position: absolute;
+  inset: 70px;
+  border-radius: 50%;
+  border: 1px dashed rgba(251,191,36,.04);
+}
+@keyframes runeSpin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.hero-eyebrow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 28px;
+  border-radius: var(--radius-btn);
+  background: rgba(251,191,36,.07);
+  border: 1px solid rgba(251,191,36,.2);
+  backdrop-filter: blur(20px);
+  font-family: var(--font-heading);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .35em;
+  color: var(--gold-1);
+  text-transform: uppercase;
+  margin-bottom: 36px;
+  animation: fadeUp .8s var(--ease-smooth) .1s both;
+  box-shadow: 0 0 30px rgba(251,191,36,.06), inset 0 1px 0 rgba(255,255,255,.1);
+}
+.eyebrow-pip {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--gold-2);
+  box-shadow: 0 0 10px var(--gold-2), 0 0 20px rgba(251,191,36,.5);
+  animation: pip 2s ease-in-out infinite;
+}
+@keyframes pip { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.6)} }
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  font-weight: 900;
+  line-height: .92;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  background: linear-gradient(155deg,
+    #fff8e8 0%,
+    #fde68a 20%,
+    #fbbf24 40%,
+    #ff6b00 62%,
+    #d97706 80%,
+    #fde68a 100%);
+  background-size: 250% 250%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 8px 30px rgba(217,119,6,.35));
+  animation:
+    fadeUp .9s var(--ease-smooth) .2s both,
+    goldShimmer 12s ease-in-out infinite;
+  margin-bottom: 12px;
+}
+@keyframes goldShimmer {
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+
+.hero-subtitle {
+  font-family: var(--font-heading);
+  font-size: clamp(.9rem, 2.5vw, 1.15rem);
+  font-weight: 400;
+  letter-spacing: .4em;
+  color: rgba(253,230,138,.55);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  animation: fadeUp .9s var(--ease-smooth) .3s both;
+}
+
+.hero-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 auto 36px;
+  width: 280px;
+  animation: fadeUp .9s var(--ease-smooth) .38s both;
+}
+.hero-divider::before, .hero-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(251,191,36,.4), transparent);
+}
+.hero-divider-gem {
+  width: 8px; height: 8px;
+  background: var(--gold-2);
+  transform: rotate(45deg);
+  box-shadow: 0 0 12px var(--gold-2), 0 0 24px rgba(251,191,36,.4);
+}
+
+.hero-desc {
+  max-width: 580px;
+  color: rgba(255,255,255,.6);
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-weight: 300;
+  line-height: 1.9;
+  font-style: italic;
+  margin: 0 auto 52px;
+  animation: fadeUp .9s var(--ease-smooth) .45s both;
+  letter-spacing: .01em;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 48px;
+  border-radius: var(--radius-btn);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: .12em;
+  color: #1a0a00;
+  text-decoration: none;
+  text-transform: uppercase;
+  background: linear-gradient(145deg, #fde68a 0%, #fbbf24 35%, #d97706 70%, #ff6b00 100%);
+  border: 1px solid rgba(255,255,255,.3);
+  box-shadow:
+    var(--shadow-md),
+    0 0 50px rgba(217,119,6,.3),
+    inset 0 2px 0 rgba(255,255,255,.5),
+    inset 0 -1px 0 rgba(0,0,0,.2);
+  animation: fadeUp .9s var(--ease-smooth) .55s both;
+  transition: transform .45s var(--ease-spring), box-shadow .45s ease, filter .3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.hero-cta::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -80%;
+  width: 50%; height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+  transform: skewX(-20deg);
+  transition: left .7s var(--ease-smooth);
+}
+.hero-cta:hover { transform: translateY(-5px) scale(1.05); filter: brightness(1.08); box-shadow: var(--shadow-lg), 0 0 70px rgba(217,119,6,.45), inset 0 2px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(0,0,0,.2); }
+.hero-cta:hover::before { left: 150%; }
+.hero-cta:active { transform: translateY(-2px) scale(1.02); transition-duration: .08s; }
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: .4;
+  animation: scrollHint 2s ease-in-out infinite, fadeUp .9s var(--ease-smooth) 1.2s both;
+  font-family: var(--font-heading);
+  font-size: .65rem;
+  letter-spacing: .3em;
+  color: var(--gold-1);
+  text-transform: uppercase;
+}
+.scroll-hint-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, transparent, var(--gold-2), transparent);
+}
+@keyframes scrollHint {
+  0%,100%{opacity:.3;transform:translateX(-50%) translateY(0)}
+  50%{opacity:.6;transform:translateX(-50%) translateY(8px)}
+}
+
+/* ═══════════════════════════════════════════
+   TABS NAVIGATION
+═══════════════════════════════════════════ */
+.nav-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+.nav-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(5,5,10,.75);
+  backdrop-filter: blur(60px) saturate(200%);
+  -webkit-backdrop-filter: blur(60px) saturate(200%);
+  border-bottom: 1px solid rgba(251,191,36,.08);
+}
+
+.nav-glow {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(251,191,36,.0) 10%,
+    rgba(251,191,36,.25) 50%,
+    rgba(251,191,36,.0) 90%,
+    transparent 100%);
+  transition: opacity .4s;
+}
+
+.tabs {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 4px;
+  padding: 10px 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  justify-content: center;
+}
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 26px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: rgba(255,255,255,.45);
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--font-heading);
+  font-size: .84rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: all .35s var(--ease-smooth);
+  position: relative;
+  overflow: hidden;
+}
+.tab-icon { font-size: 1.1rem; transition: transform .4s var(--ease-spring); }
+.tab:hover .tab-icon { transform: scale(1.25) rotate(-5deg); }
+
+.tab:hover {
+  color: rgba(255,255,255,.8);
+  background: rgba(255,255,255,.05);
+  border-color: rgba(255,255,255,.1);
+  transform: translateY(-2px);
+}
+
+.tab.active {
+  color: var(--gold-1);
+  background: linear-gradient(145deg, rgba(251,191,36,.14), rgba(217,119,6,.10));
+  border-color: rgba(251,191,36,.25);
+  box-shadow: 0 0 24px rgba(251,191,36,.1), inset 0 1px 0 rgba(255,255,255,.15), inset 0 -1px 0 rgba(0,0,0,.1);
+  transform: none;
+}
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px; height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--gold-2), var(--gold-3));
+  box-shadow: 0 0 10px rgba(251,191,36,.7);
+}
+
+/* Ink-slide pill de tabs */
+.tab-slider {
+  position: absolute;
+  height: calc(100% - 20px);
+  background: linear-gradient(145deg, rgba(251,191,36,.14), rgba(217,119,6,.10));
+  border: 1px solid rgba(251,191,36,.25);
+  border-radius: 14px;
+  box-shadow: 0 0 24px rgba(251,191,36,.1);
+  transition: all .4s var(--ease-spring);
+  pointer-events: none;
+  top: 10px;
+}
+
+/* ═══════════════════════════════════════════
+   SECTIONS
+═══════════════════════════════════════════ */
+.sections-wrap {
+  position: relative;
+  z-index: 10;
+  min-height: 60vh;
+}
+
+.section {
+  display: none;
+  padding: 80px 24px 100px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.section.active {
+  display: block;
+  animation: sectionIn .65s var(--ease-smooth) both;
+}
+@keyframes sectionIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+.section-tag {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .4em;
+  color: var(--gold-3);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  opacity: .8;
+}
+.section-header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: .05em;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #fff8e8 0%, #fde68a 35%, #fbbf24 65%, #d97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 4px 20px rgba(217,119,6,.25));
+  margin-bottom: 16px;
+}
+.section-header p {
+  color: rgba(255,255,255,.45);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Ornamento decorativo */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: center;
+  margin-bottom: 56px;
+}
+.ornament::before, .ornament::after {
+  content: '';
+  width: 80px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(251,191,36,.4));
+}
+.ornament::after { background: linear-gradient(90deg, rgba(251,191,36,.4), transparent); }
+.ornament-center {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ornament-diamond {
+  width: 6px; height: 6px;
+  background: var(--gold-2);
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px rgba(251,191,36,.6);
+}
+.ornament-diamond.sm {
+  width: 4px; height: 4px;
+  background: rgba(251,191,36,.5);
+  box-shadow: none;
+}
+
+/* ═══════════════════════════════════════════
+   GLASS CARD BASE
+═══════════════════════════════════════════ */
+.glass-card {
+  position: relative;
+  background: linear-gradient(145deg,
+    rgba(255,255,255,.07) 0%,
+    rgba(255,255,255,.032) 50%,
+    rgba(217,119,6,.02) 100%);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  box-shadow:
+    var(--shadow-lg),
+    0 0 0 .5px rgba(255,255,255,.06),
+    inset 0 1.5px 0 rgba(255,255,255,.18),
+    inset 0 -1px 0 rgba(0,0,0,.12);
+  overflow: hidden;
+  transition: transform .55s var(--ease-spring), box-shadow .5s ease, border-color .35s ease;
+}
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 42%;
+  background: linear-gradient(180deg, rgba(255,255,255,.13) 0%, transparent 100%);
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.glass-card:hover {
+  border-color: rgba(251,191,36,.22);
+  box-shadow:
+    var(--shadow-xl),
+    0 0 0 .5px rgba(251,191,36,.08),
+    inset 0 1.5px 0 rgba(255,255,255,.22),
+    inset 0 -1px 0 rgba(0,0,0,.15),
+    0 0 60px rgba(217,119,6,.12);
+}
+/* Hover transforms only for pointer devices (fixes mobile sticky-hover) */
+@media (hover: hover) and (pointer: fine) {
+  .glass-card:hover {
+    transform: translateY(-10px) scale(1.015);
+  }
+}
+.card-inner { position: relative; z-index: 2; }
+
+/* ═══════════════════════════════════════════
+   SECCIÓN — MANGA
+═══════════════════════════════════════════ */
+.manga-hero-card {
+  padding: 56px 48px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+.manga-vol-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 20px;
+  background: rgba(251,191,36,.1);
+  border: 1px solid rgba(251,191,36,.2);
+  border-radius: var(--radius-btn);
+  font-family: var(--font-heading);
+  font-size: .7rem;
+  letter-spacing: .3em;
+  color: var(--gold-2);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.manga-icon {
+  font-size: 72px;
+  display: block;
+  margin-bottom: 20px;
+  animation: levitate 5s ease-in-out infinite;
+  filter: drop-shadow(0 8px 20px rgba(217,119,6,.45));
+}
+@keyframes levitate {
+  0%,100%{transform:translateY(0) rotate(0)}
+  50%{transform:translateY(-12px) rotate(1.5deg)}
+}
+.manga-hero-card h3,
+.text-gradient-gold--xl {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  background: linear-gradient(135deg, #fff8e8, #fbbf24, #d97706);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+}
+.manga-hero-card p {
+  color: rgba(255,255,255,.6);
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.85;
+  max-width: 520px;
+  margin: 0 auto 32px;
+}
+
+/* Stats row */
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  margin: 32px 0;
+  flex-wrap: wrap;
+}
+.stat-item {
+  text-align: center;
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gold-1), var(--gold-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-label {
+  font-family: var(--font-heading);
+  font-size: .65rem;
+  letter-spacing: .3em;
+  color: rgba(255,255,255,.35);
+  text-transform: uppercase;
+}
+
+/* Volumes grid */
+.volumes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.volume-card {
+  position: relative;
+  aspect-ratio: 2/3;
+  border-radius: 12px;
+  background: linear-gradient(145deg, rgba(255,255,255,.06), rgba(217,119,6,.04));
+  border: 1px solid rgba(255,255,255,.09);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all .4s var(--ease-spring);
+  box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,.12);
+}
+.volume-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 40%;
+  background: linear-gradient(180deg, rgba(255,255,255,.1) 0%, transparent 100%);
+}
+.volume-card:hover {
+  border-color: rgba(251,191,36,.3);
+  box-shadow: var(--shadow-md), 0 0 30px rgba(217,119,6,.15), inset 0 1px 0 rgba(255,255,255,.18);
+}
+.vol-num {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gold-1), var(--gold-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative; z-index: 1;
+}
+.vol-label {
+  font-family: var(--font-heading);
+  font-size: .6rem;
+  letter-spacing: .25em;
+  color: rgba(255,255,255,.4);
+  text-transform: uppercase;
+  position: relative; z-index: 1;
+}
+.vol-status {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34,197,94,.7);
+  z-index: 2;
+}
+.vol-status.pending { background: var(--gold-2); box-shadow: 0 0 8px rgba(251,191,36,.7); }
+
+/* ═══════════════════════════════════════════
+   SECCIÓN — ANIME
+═══════════════════════════════════════════ */
+.anime-main {
+  padding: 56px 48px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+.anime-seasons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.season-card {
+  padding: 36px 32px;
+  text-align: center;
+  border-radius: 18px;
+  cursor: pointer;
+}
+.season-number {
+  font-family: var(--font-heading);
+  font-size: .65rem;
+  letter-spacing: .35em;
+  color: rgba(251,191,36,.6);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.season-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff8e8, #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+  letter-spacing: .04em;
+}
+.season-eps {
+  font-family: var(--font-heading);
+  font-size: .75rem;
+  letter-spacing: .15em;
+  color: rgba(255,255,255,.45);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.season-bar-wrap {
+  height: 3px;
+  background: rgba(255,255,255,.08);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.season-bar {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--gold-2), var(--gold-3));
+  box-shadow: 0 0 8px rgba(251,191,36,.5);
+  transition: width 1.2s var(--ease-smooth);
+}
+.season-bar-label {
+  font-family: var(--font-heading);
+  font-size: .6rem;
+  letter-spacing: .15em;
+  color: rgba(255,255,255,.3);
+  text-transform: uppercase;
+}
+.season-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 16px;
+  animation: levitate 4s ease-in-out infinite;
+  filter: drop-shadow(0 6px 16px rgba(217,119,6,.4));
+}
+.season-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: var(--radius-btn);
+  font-family: var(--font-heading);
+  font-size: .62rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-top: 16px;
+}
+.badge-complete { background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.25); color: #86efac; }
+.badge-airing   { background: rgba(251,191,36,.12); border: 1px solid rgba(251,191,36,.25); color: var(--gold-1); }
+.badge-upcoming { background: rgba(99,102,241,.12); border: 1px solid rgba(99,102,241,.25); color: #c7d2fe; }
+
+/* Where to watch */
+.watch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+.watch-item {
+  padding: 24px 20px;
+  border-radius: 16px;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  transition: all .4s var(--ease-spring);
+  display: block;
+}
+.watch-item:hover {
+  border-color: rgba(251,191,36,.25);
+  box-shadow: var(--shadow-md), 0 0 30px rgba(217,119,6,.12);
+}
+@media (hover: hover) and (pointer: fine) {
+  .watch-item:hover {
+    transform: translateY(-6px) scale(1.03);
+  }
+  .volume-card:hover {
+    transform: translateY(-8px) scale(1.04);
+  }
+  .arc-card:hover {
+    transform: translateX(8px);
+  }
+  .social-card:hover {
+    transform: translateY(-10px) scale(1.03);
+  }
+}
+.watch-logo { font-size: 2.2rem; margin-bottom: 10px; display: block; }
+.watch-name {
+  font-family: var(--font-heading);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.65);
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════
+   SECCIÓN — NOVELA LIGERA
+═══════════════════════════════════════════ */
+.novel-hero {
+  padding: 56px 48px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+.novel-arc-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.arc-card {
+  padding: 28px 36px;
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  text-align: left;
+  transition: all .4s var(--ease-spring);
+  cursor: pointer;
+}
+.arc-card:hover {
+  border-color: rgba(251,191,36,.22);
+  box-shadow: var(--shadow-md), -4px 0 0 rgba(251,191,36,.4), 0 0 30px rgba(217,119,6,.1);
+}
+.arc-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gold-1), var(--gold-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  min-width: 48px;
+  text-align: center;
+}
+.arc-info h4 {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgba(255,255,255,.9);
+  letter-spacing: .04em;
+  margin-bottom: 6px;
+}
+.arc-info p {
+  font-size: 1rem;
+  color: rgba(255,255,255,.45);
+  font-style: italic;
+  line-height: 1.5;
+}
+.arc-vols {
+  text-align: right;
+  flex-shrink: 0;
+}
+.arc-vols span {
+  font-family: var(--font-heading);
+  font-size: .65rem;
+  letter-spacing: .2em;
+  color: rgba(255,255,255,.3);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+.arc-vols strong {
+  font-family: var(--font-heading);
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--gold-2);
+}
+
+/* ═══════════════════════════════════════════
+   SECCIÓN — REDES SOCIALES
+═══════════════════════════════════════════ */
+.social-hero {
+  padding: 56px 48px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+.social-main-icon {
+  font-size: 72px;
+  display: block;
+  margin-bottom: 20px;
+  animation: levitate 4.5s ease-in-out infinite;
+  filter: drop-shadow(0 8px 20px rgba(217,119,6,.5));
+}
+.social-hero p {
+  color: rgba(255,255,255,.55);
+  font-size: var(--text-lg);
+  font-style: italic;
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.75;
+}
+
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.social-card {
+  padding: 36px 28px;
+  border-radius: 18px;
+  text-decoration: none;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  transition: all .5s var(--ease-spring);
+}
+.social-card:hover { }
+
+/* Accent color por red */
+.social-card[data-color="discord"]  { --accent: #5865F2; }
+.social-card[data-color="twitter"]  { --accent: #1d9bf0; }
+.social-card[data-color="reddit"]   { --accent: #ff4500; }
+.social-card[data-color="youtube"]  { --accent: #ff0000; }
+.social-card[data-color="telegram"] { --accent: #229ED9; }
+.social-card[data-color="tiktok"]   { --accent: #ff0050; }
+
+/* color-mix fallback for older browsers */
+.social-card:hover {
+  border-color: rgba(255,255,255,.2);
+  box-shadow: var(--shadow-lg), 0 0 40px rgba(255,255,255,.08);
+}
+@supports (color: color-mix(in srgb, red 40%, transparent)) {
+  .social-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+    box-shadow: var(--shadow-lg), 0 0 40px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+}
+.social-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity .4s ease;
+  box-shadow: 0 0 12px var(--accent);
+}
+.social-card:hover::after { opacity: 1; }
+
+.social-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.social-platform-icon { font-size: 2.8rem; transition: transform .45s var(--ease-spring); }
+.social-card:hover .social-platform-icon { transform: scale(1.2) rotate(-8deg); }
+.social-arrow {
+  color: rgba(255,255,255,.2);
+  font-size: 1.2rem;
+  transition: all .4s var(--ease-spring);
+}
+.social-card:hover .social-arrow { color: rgba(255,255,255,.7); transform: translate(4px,-4px); }
+
+.social-platform-name {
+  font-family: var(--font-heading);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .3em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  opacity: .85;
+}
+.social-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: rgba(255,255,255,.88);
+  margin-bottom: 8px;
+  letter-spacing: .02em;
+}
+.social-card-desc {
+  font-size: .98rem;
+  color: rgba(255,255,255,.42);
+  font-style: italic;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+.social-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.social-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: pip 2s ease-in-out infinite;
+}
+.social-followers {
+  font-family: var(--font-heading);
+  font-size: .65rem;
+  letter-spacing: .2em;
+  color: rgba(255,255,255,.3);
+  text-transform: uppercase;
+}
+
+/* Drive / link button */
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 36px;
+  border-radius: var(--radius-btn);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: .88rem;
+  letter-spacing: .1em;
+  color: #1a0800;
+  text-decoration: none;
+  text-transform: uppercase;
+  background: linear-gradient(145deg, #fde68a 0%, #fbbf24 40%, #d97706 100%);
+  border: 1px solid rgba(255,255,255,.28);
+  box-shadow:
+    var(--shadow-md),
+    0 0 36px rgba(217,119,6,.25),
+    inset 0 2px 0 rgba(255,255,255,.45),
+    inset 0 -1px 0 rgba(0,0,0,.18);
+  transition: transform .4s var(--ease-spring), box-shadow .4s ease, filter .3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.action-btn::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -80%;
+  width: 50%; height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
+  transform: skewX(-20deg);
+  transition: left .7s var(--ease-smooth);
+}
+.action-btn:hover { transform: translateY(-4px) scale(1.06); box-shadow: var(--shadow-lg), 0 0 50px rgba(217,119,6,.35), inset 0 2px 0 rgba(255,255,255,.5), inset 0 -1px 0 rgba(0,0,0,.2); filter: brightness(1.06); }
+.action-btn:hover::before { left: 150%; }
+.action-btn:active { transform: translateY(-1px) scale(1.02); transition-duration: .08s; }
+
+/* Secondary ghost button */
+.ghost-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 36px;
+  border-radius: var(--radius-btn);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: .88rem;
+  letter-spacing: .1em;
+  color: var(--gold-1);
+  text-decoration: none;
+  text-transform: uppercase;
+  background: rgba(251,191,36,.07);
+  border: 1px solid rgba(251,191,36,.25);
+  box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,.12);
+  transition: all .4s var(--ease-spring);
+}
+.ghost-btn:hover { background: rgba(251,191,36,.13); border-color: rgba(251,191,36,.4); transform: translateY(-3px); box-shadow: var(--shadow-md), 0 0 24px rgba(251,191,36,.12); }
+
+.btn-group { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 60px 24px 40px;
+  border-top: 1px solid rgba(255,255,255,.05);
+}
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gold-1), var(--gold-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: .08em;
+  margin-bottom: 12px;
+}
+.footer-copy {
+  font-family: var(--font-heading);
+  font-size: .68rem;
+  letter-spacing: .25em;
+  color: rgba(255,255,255,.2);
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS UTILS
+═══════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(28px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .manga-hero-card, .anime-main, .novel-hero, .social-hero { padding: 40px 28px; }
+  .arc-card { grid-template-columns: auto 1fr; }
+  .arc-vols { display: none; }
+  .tabs { justify-content: flex-start; }
+  .social-grid { grid-template-columns: 1fr; }
+  .stats-row { gap: 28px; }
+  .hero-rune { width: 340px; height: 340px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* ═══════════════════════════════════════════
+   ACCESSIBILITY
+═══════════════════════════════════════════ */
+.tab:focus-visible, .action-btn:focus-visible, .ghost-btn:focus-visible,
+.social-card:focus-visible, .volume-card:focus-visible {
+  outline: 2px solid var(--gold-2);
+  outline-offset: 3px;
+}
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+<!-- Video de fondo: usa assets locales si están disponibles, sino canvas se activa como fallback -->
+<video id="bg-video" autoplay muted loop playsinline preload="auto" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-5;pointer-events:none;">
+  <source src="https://raw.githubusercontent.com/darkking7rub-blip/D/main/Nuevo%20proyecto%2044%20%5B38FF1C6%5D.mp4" type="video/mp4">
+</video>
+<!-- Fondo canvas fallback (se muestra si el video no carga) -->
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+<div id="bg-overlay" aria-hidden="true"></div>
+<div id="bg-grain" aria-hidden="true"></div>
+
+<!-- Orbs de ambiente -->
+<div class="orbs" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- Partículas -->
+<div class="sparks" aria-hidden="true">
+  <div class="spark"></div><div class="spark"></div><div class="spark"></div>
+  <div class="spark"></div><div class="spark"></div><div class="spark"></div>
+  <div class="spark"></div><div class="spark"></div><div class="spark"></div>
+  <div class="spark"></div><div class="spark"></div><div class="spark"></div>
+</div>
+
+<!-- ══════════════════════════
+     HERO
+══════════════════════════ -->
+<section class="hero" aria-label="Portada">
+  <div class="hero-rune" aria-hidden="true"></div>
+
+  <div class="hero-eyebrow" role="doc-subtitle">
+    <span class="eyebrow-pip" aria-hidden="true"></span>
+    DARK-KING(FANSITE)
+    <span class="eyebrow-pip" aria-hidden="true"></span>
+  </div>
+
+  <h1 class="hero-title">Mushoku<br>Tensei</h1>
+  <p class="hero-subtitle">Isekai Ittara Honki Dasu</p>
+
+  <div class="hero-divider" aria-hidden="true">
+    <div class="hero-divider-gem"></div>
+  </div>
+
+  <p class="hero-desc">
+    Mushoku Tensei es considerado por muchos como el &quot;padre&quot; de los isekai modernos.
+  </p>
+
+  <a href="#contenido" class="hero-cta" aria-label="Explorar el universo de Mushoku Tensei" onclick="event.preventDefault();document.getElementById('contenido').scrollIntoView({behavior:'smooth'})">
+    <span>Explorar contenido</span>
+    <span aria-hidden="true">⟶</span>
+  </a>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <div class="scroll-hint-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════
+     TABS NAVIGATION
+══════════════════════════ -->
+<nav class="nav-wrap" id="contenido" aria-label="Secciones">
+  <div class="nav-bg" aria-hidden="true"></div>
+  <div class="nav-glow" aria-hidden="true"></div>
+
+  <div class="tabs" role="tablist" aria-label="Secciones del universo">
+    <button class="tab active" role="tab" aria-selected="true"  aria-controls="sec-manga"   data-tab="manga"   id="tab-manga">
+      <span class="tab-icon" aria-hidden="true">📖</span> Manga
+    </button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="sec-anime"   data-tab="anime"   id="tab-anime">
+      <span class="tab-icon" aria-hidden="true">🎬</span> Anime
+    </button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="sec-novela"  data-tab="novela"  id="tab-novela">
+      <span class="tab-icon" aria-hidden="true">📚</span> Novela Ligera
+    </button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="sec-social"  data-tab="social"  id="tab-social">
+      <span class="tab-icon" aria-hidden="true">🌐</span> Redes Sociales
+    </button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════
+     SECCIONES
+══════════════════════════ -->
+<main class="sections-wrap">
+
+  <!-- ── MANGA ── -->
+  <section class="section active" id="sec-manga" role="tabpanel" aria-labelledby="tab-manga">
+
+    <div class="section-header">
+      <span class="section-tag">Adaptación</span>
+      <h2>Manga</h2>
+      <p>La obra en viñetas que captura la esencia visual del isekai</p>
+    </div>
+    <div class="ornament" aria-hidden="true">
+      <div class="ornament-center">
+        <div class="ornament-diamond sm"></div>
+        <div class="ornament-diamond"></div>
+        <div class="ornament-diamond sm"></div>
+      </div>
+    </div>
+
+    <!-- Card principal -->
+    <div class="glass-card manga-hero-card">
+      <div class="card-inner">
+        <div class="manga-vol-badge">
+          <span aria-hidden="true">✦</span> Serialización activa
+        </div>
+        <span class="manga-icon" aria-hidden="true">📖</span>
+        <h3 class="text-gradient-gold text-gradient-gold--xl" style="margin-bottom:16px;">Mushoku Tensei</h3>
+        <p>Ilustrado por Yuka Fujikawa y basado en la obra original de Rifujin na Magonote, el manga adapta la historia de Rudeus Greyrat con un enfoque más dinámico y visual del mundo de Mushoku Tensei.</p>
+
+        <div class="stats-row" aria-label="Estadísticas del manga">
+          <div class="stat-item">
+            <span class="stat-num" aria-label="21 volúmenes">21+</span>
+            <span class="stat-label">Volúmenes</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num" aria-label="más de 100 capítulos" >100+</span>
+            <span class="stat-label">Capítulos</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num" aria-label="2014 año de inicio">2014</span>
+            <span class="stat-label">Inicio</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num" aria-label="8.5 de puntuación">8.5</span>
+            <span class="stat-label">Puntuación</span>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <a href="https://drive.google.com/drive/folders/1-WikTKANrBp5yPReu_zg2EhaTCePajiS" class="action-btn" aria-label="Leer el manga en Drive">
+            <span aria-hidden="true">📂</span> Leer en Drive
+          </a>
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- Volumes -->
+    <div class="section-header" style="margin-top:52px; margin-bottom:28px;">
+      <span class="section-tag">Biblioteca</span>
+      <h2 style="font-size:clamp(1.4rem,3vw,2rem)">Capítulos Disponibles</h2>
+    </div>
+
+    <div class="volumes-grid" role="list" aria-label="Capítulos del manga">
+      <div class="glass-card volume-card" role="listitem" style="aspect-ratio:auto;padding:40px;grid-column:1/-1;">
+        <div class="card-inner" style="text-align:center;">
+          <div class="vol-num">1–119</div>
+          <div class="vol-label" style="margin-top:10px;">Capítulos Disponibles (+Spin-off)</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── ANIME ── -->
+  <section class="section" id="sec-anime" role="tabpanel" aria-labelledby="tab-anime">
+
+    <div class="section-header">
+      <span class="section-tag">Animación</span>
+      <h2>Anime</h2>
+      <p>La adaptación animada que conquistó el mundo del isekai</p>
+    </div>
+    <div class="ornament" aria-hidden="true">
+      <div class="ornament-center">
+        <div class="ornament-diamond sm"></div>
+        <div class="ornament-diamond"></div>
+        <div class="ornament-diamond sm"></div>
+      </div>
+    </div>
+
+    <!-- Card principal -->
+    <div class="glass-card anime-main">
+      <div class="card-inner">
+        <span class="manga-vol-badge">
+          <span aria-hidden="true">✦</span> Studio Bind · 2021–Presente
+        </span>
+        <span class="season-icon" aria-hidden="true">🎬</span>
+        <h3 class="text-gradient-gold text-gradient-gold--display" style="margin-bottom:12px;">Adaptación Animada</h3>
+        <p class="card-prose">Studio Bind da vida al mundo de Rudeus con una animación que marcó un antes y un después en el género isekai, adaptando los momentos más importantes de la novela con una producción visual destacada y una ambientación muy detallada.</p>
+
+        <div class="stats-row">
+          <div class="stat-item"><span class="stat-num">2</span><span class="stat-label">Temporadas</span></div>
+          <div class="stat-item"><span class="stat-num">48</span><span class="stat-label">Episodios</span></div>
+          <div class="stat-item"><span class="stat-num">8.6</span><span class="stat-label">MAL Score</span></div>
+        </div>
+      
+        <div class="btn-group" style="margin-top:30px;">
+          <a href="https://drive.google.com/drive/folders/16lZPEr3RQZRY9-KpDyL-hQVk6fBdAd-V" class="action-btn">
+            <span aria-hidden="true">📂</span> Ver en Drive
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seasons -->
+    <div class="anime-seasons" role="list" aria-label="Temporadas del anime">
+      <div class="glass-card season-card" role="listitem">
+        <div class="card-inner">
+          <p class="season-number">Temporada 01</p>
+          <span class="season-icon" style="font-size:3rem;margin-bottom:12px;" aria-hidden="true">🌱</span>
+          <p class="season-title">Infancia</p>
+          <p class="season-eps">23 episodios · 2021</p>
+          <div class="season-bar-wrap" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de emisión: completo">
+            <div class="season-bar" style="width:100%"></div>
+          </div>
+          <p class="season-bar-label">Completada · 100%</p>
+          <span class="season-badge badge-complete">✓ Completa</span>
+        </div>
+      </div>
+
+      <div class="glass-card season-card" role="listitem">
+        <div class="card-inner">
+          <p class="season-number">Temporada 02</p>
+          <span class="season-icon" style="font-size:3rem;margin-bottom:12px;" aria-hidden="true">⚡</span>
+          <p class="season-title">Adolescencia</p>
+          <p class="season-eps">24 episodios · 2023–2024</p>
+          <div class="season-bar-wrap" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de emisión: completo">
+            <div class="season-bar" style="width:100%"></div>
+          </div>
+          <p class="season-bar-label">Completada · 100%</p>
+          <span class="season-badge badge-complete">✓ Completa</span>
+        </div>
+      </div>
+
+      <div class="glass-card season-card" role="listitem">
+        <div class="card-inner">
+          <p class="season-number">Temporada 03</p>
+          <span class="season-icon" style="font-size:3rem;margin-bottom:12px;" aria-hidden="true">🔥</span>
+          <p class="season-title">Temporada Confirmada</p>
+          <p class="season-eps">Próximamente · 2026</p>
+          <div class="season-bar-wrap" id="s3bar-wrap" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de producción de Temporada 3">
+            <div class="season-bar" id="s3bar" style="width:15%"></div>
+          </div>
+          <p class="season-bar-label">Producción anunciada</p>
+          <span class="season-badge badge-upcoming">◆ Próximamente</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── NOVELA LIGERA ── -->
+  <section class="section" id="sec-novela" role="tabpanel" aria-labelledby="tab-novela">
+
+    <div class="section-header">
+      <span class="section-tag">Obra Original</span>
+      <h2>Novela Ligera</h2>
+      <p>El origen de todo — la obra maestra de Rifujin na Magonote</p>
+    </div>
+    <div class="ornament" aria-hidden="true">
+      <div class="ornament-center">
+        <div class="ornament-diamond sm"></div>
+        <div class="ornament-diamond"></div>
+        <div class="ornament-diamond sm"></div>
+      </div>
+    </div>
+
+    <!-- Card principal -->
+    <div class="glass-card novel-hero">
+      <div class="card-inner">
+        <span class="manga-vol-badge"><span aria-hidden="true">✦</span> Obra Completa — 26 Volúmenes</span>
+        <span class="manga-icon" aria-hidden="true">📚</span>
+        <h3 class="text-gradient-gold text-gradient-gold--display" style="margin-bottom:14px;">La Novela Original</h3>
+        <p class="card-prose">Comenzó como una web novel en Shōsetsuka ni Narō en 2012. Una de las novelas ligeras isekai más influyentes de la década, reconocida por su desarrollo de personajes y construcción de mundo.</p>
+        <div class="stats-row">
+          <div class="stat-item"><span class="stat-num">26</span><span class="stat-label">Volúmenes</span></div>
+          <div class="stat-item"><span class="stat-num">2012</span><span class="stat-label">Publicación</span></div>
+          <div class="stat-item"><span class="stat-num">+13M</span><span class="stat-label">Copias</span></div>
+        </div>
+        <div class="btn-group">
+          <a href="https://drive.google.com/drive/folders/1FGEn7YL7TEhOX5WpQmuSs7xiWaE03-WS" class="action-btn">
+            <span aria-hidden="true">📂</span> Leer en Drive
+          </a>
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- Arcos argumentales -->
+    <div class="section-header" style="margin-top:52px;margin-bottom:28px;">
+      <span class="section-tag">Narrativa</span>
+      <h2 style="font-size:clamp(1.4rem,3vw,2rem)">Arcos Argumentales</h2>
+    </div>
+
+    <div class="novel-arc-grid" role="list" aria-label="Arcos argumentales de la novela">
+      <div class="glass-card arc-card" role="listitem" tabindex="0" aria-label="Arco 1: Infancia">
+        <div class="arc-num" aria-hidden="true">I</div>
+        <div class="arc-info">
+          <h4>Arco de la Infancia</h4>
+          <p>El renacimiento de Rudeus y su vida en la familia Greyrat. Primeros pasos en la magia.</p>
+        </div>
+        <div class="arc-vols"><span>Volúmenes</span><strong>01 – 02</strong></div>
+      </div>
+      <div class="glass-card arc-card" role="listitem" tabindex="0" aria-label="Arco 2: Abandono del hogar">
+        <div class="arc-num" aria-hidden="true">II</div>
+        <div class="arc-info">
+          <h4>Abandono del Hogar</h4>
+          <p>El viaje junto a Eris y Ruijerd por el continente del Demon, enfrentando el exilio y el crecimiento.</p>
+        </div>
+        <div class="arc-vols"><span>Volúmenes</span><strong>03 – 05</strong></div>
+      </div>
+      <div class="glass-card arc-card" role="listitem" tabindex="0" aria-label="Arco 3: Continente del Demon">
+        <div class="arc-num" aria-hidden="true">III</div>
+        <div class="arc-info">
+          <h4>Continente del Demon</h4>
+          <p>La travesía épica de regreso a casa, con batallas y revelaciones que cambiarán el destino.</p>
+        </div>
+        <div class="arc-vols"><span>Volúmenes</span><strong>06 – 11</strong></div>
+      </div>
+      <div class="glass-card arc-card" role="listitem" tabindex="0" aria-label="Arco 4: Milis">
+        <div class="arc-num" aria-hidden="true">IV</div>
+        <div class="arc-info">
+          <h4>Universidad de Magia</h4>
+          <p>Rudeus ingresa a la Universidad de Magia de Ranoa, donde conoce nuevos aliados y profundiza sus habilidades mágicas.</p>
+        </div>
+        <div class="arc-vols"><span>Volúmenes</span><strong>12 – 15</strong></div>
+      </div>
+      <div class="glass-card arc-card" role="listitem" tabindex="0" aria-label="Arco 5: La Maldición">
+        <div class="arc-num" aria-hidden="true">V</div>
+        <div class="arc-info">
+          <h4>Batalla contra Hitogami</h4>
+          <p>El arco más oscuro: la confrontación con Orsted y el peso del destino profetizado.</p>
+        </div>
+        <div class="arc-vols"><span>Volúmenes</span><strong>16 – 20</strong></div>
+      </div>
+      <div class="glass-card arc-card" role="listitem" tabindex="0" aria-label="Arco 6: El Final">
+        <div class="arc-num" aria-hidden="true">VI</div>
+        <div class="arc-info">
+          <h4>El Fin del Camino</h4>
+          <p>La confrontación definitiva contra Hitogami y la resolución de todas las profecías entrelazadas.</p>
+        </div>
+        <div class="arc-vols"><span>Volúmenes</span><strong>21 – 26</strong></div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── REDES SOCIALES ── -->
+  <section class="section" id="sec-social" role="tabpanel" aria-labelledby="tab-social">
+
+    <div class="section-header">
+      <span class="section-tag">Mi Comunidad</span>
+      <h2>Redes Sociales</h2>
+      <p>Únete a la comunidad y sigue todas las novedades</p>
+    </div>
+    <div class="ornament" aria-hidden="true">
+      <div class="ornament-center">
+        <div class="ornament-diamond sm"></div>
+        <div class="ornament-diamond"></div>
+        <div class="ornament-diamond sm"></div>
+      </div>
+    </div>
+
+    <!-- Card principal -->
+    <div class="glass-card social-hero">
+      <div class="card-inner">
+        <span class="social-main-icon" aria-hidden="true">🌐</span>
+        <h3 class="text-gradient-gold text-gradient-gold--display" style="margin-bottom:12px;">Mi comunidad</h3>
+      </div>
+    </div>
+
+    <!-- Social grid -->
+    <div class="social-grid" role="list" aria-label="Redes sociales de la comunidad">
+
+      <a href="https://youtube.com/@darkking-l9r?si=urWR6kxzoQ7rwWZ0" class="glass-card social-card" data-color="youtube" role="listitem" aria-label="Suscríbete a nuestro canal de YouTube">
+        <div class="card-inner">
+          <div class="social-card-top">
+            <span class="social-platform-icon" aria-hidden="true">▶</span>
+            <span class="social-arrow" aria-hidden="true">↗</span>
+          </div>
+          <p class="social-platform-name">YouTube</p>
+          <p class="social-card-title">Dark King Channel</p>
+          <p class="social-card-desc">Próximamente tutoriales de edición en celular(edits, animaciones, tutoriales)</p>
+          <div class="social-meta">
+            <span class="social-dot" aria-hidden="true"></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.tiktok.com/@dark.king1101?_r=1&_t=ZS-96aaXASlJpd" class="glass-card social-card" data-color="tiktok" role="listitem" aria-label="Síguenos en TikTok">
+        <div class="card-inner">
+          <div class="social-card-top">
+            <span class="social-platform-icon" aria-hidden="true">🎵</span>
+            <span class="social-arrow" aria-hidden="true">↗</span>
+          </div>
+          <p class="social-platform-name">TikTok</p>
+          <p class="social-card-title">@dark.king1101</p>
+          <p class="social-card-desc">Clips, edits, momentos icónicos y contenido viral de Mushoku Tensei.</p>
+          <div class="social-meta">
+            <span class="social-dot" aria-hidden="true"></span>
+            <span class="social-followers">1400+ Seguidores</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-logo">Dark King</p>
+  <p class="footer-copy">© <span id="footer-year"></span> · Fansite no oficial de Mushoku Tensei · Todos los derechos de la obra pertenecen a sus respectivos creadores</p>
+</footer>
+
+
+<script>
+/* ══════════════════════════════
+   DYNAMIC COPYRIGHT YEAR
+══════════════════════════════ */
+document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+/* ══════════════════════════════
+   VIDEO FONDO — con fallback a canvas
+══════════════════════════════ */
+(function(){
+  const video = document.getElementById('bg-video');
+  const canvas = document.getElementById('bg-canvas');
+
+  function showCanvas(){
+    canvas.style.display = 'block';
+    video.style.display = 'none';
+  }
+  function showVideo(){
+    canvas.style.display = 'none';
+    video.style.display = 'block';
+  }
+
+  // No sources configured: show canvas immediately
+  if(video.querySelectorAll('source:not([src=""])').length === 0){
+    showCanvas();
+    return;
+  }
+
+  video.addEventListener('canplay', showVideo);
+  video.addEventListener('error', showCanvas);
+  setTimeout(() => { if(video.readyState < 2) showCanvas(); }, 3000);
+})();
+
+/* ══════════════════════════════
+   RAF SCHEDULER — Un solo loop coordinado (fixes I3)
+══════════════════════════════ */
+const RAF = {
+  _fns: new Set(),
+  add(fn)  { this._fns.add(fn); },
+  remove(fn){ this._fns.delete(fn); },
+  _tick(t) { this._fns.forEach(fn => fn(t)); requestAnimationFrame(t => this._tick(t)); }
+};
+RAF._tick(0);
+
+/* ══════════════════════════════
+   CANVAS — Estrellas animadas (fallback)
+══════════════════════════════ */
+(function(){
+  const canvas = document.getElementById('bg-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [];
+
+  function resize(){
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function initStars(){
+    stars = [];
+    const count = Math.floor((W * H) / 9000);
+    for(let i = 0; i < count; i++){
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.1 + .2,
+        alpha: Math.random() * .6 + .1,
+        speed: Math.random() * .0003 + .0001,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function draw(t){
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#05050a';
+    ctx.fillRect(0, 0, W, H);
+    stars.forEach(s => {
+      const a = s.alpha * (.65 + .35 * Math.sin(t * s.speed * 1000 + s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(253, 230, 138, ${a})`;
+      ctx.fill();
+    });
+  }
+
+  window.addEventListener('resize', () => { resize(); initStars(); }, { passive: true });
+  resize();
+  initStars();
+  RAF.add(draw); // usa el scheduler global en lugar de un loop propio
+})();
+
+/* ══════════════════════════════
+   CURSOR PERSONALIZADO
+══════════════════════════════ */
+(function(){
+  const cur  = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  if(window.matchMedia('(pointer: coarse)').matches){ cur.style.display = ring.style.display = 'none'; return; }
+
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+
+  function updateCursor(){
+    rx += (mx - rx) * .12;
+    ry += (my - ry) * .12;
+    cur.style.left  = mx + 'px';
+    cur.style.top   = my + 'px';
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+  }
+  RAF.add(updateCursor); // usa el scheduler global en lugar de un loop propio
+
+  document.querySelectorAll('a, button, [tabindex]').forEach(el => {
+    el.addEventListener('mouseenter', () => { cur.style.width = cur.style.height = '20px'; cur.style.opacity = '.7'; });
+    el.addEventListener('mouseleave', () => { cur.style.width = cur.style.height = '12px'; cur.style.opacity = '1'; });
+  });
+})();
+
+/* ══════════════════════════════
+   TABS — Sistema de navegación
+══════════════════════════════ */
+(function(){
+  const tabs = document.querySelectorAll('.tab');
+  const sections = document.querySelectorAll('.section');
+
+  function activate(tabEl){
+    tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+    sections.forEach(s => s.classList.remove('active'));
+    tabEl.classList.add('active');
+    tabEl.setAttribute('aria-selected','true');
+    const id = 'sec-' + tabEl.dataset.tab;
+    const sec = document.getElementById(id);
+    if(sec){
+      sec.classList.add('active');
+      document.getElementById('contenido').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Wait for section to be visible before setting up reveal animations
+      sec.addEventListener('animationend', setupReveal, { once: true });
+    }
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => activate(tab));
+    tab.addEventListener('keydown', e => {
+      const arr = [...tabs];
+      const idx = arr.indexOf(tab);
+      if(e.key === 'ArrowRight'){ e.preventDefault(); const next = arr[(idx+1) % arr.length]; next.focus(); activate(next); }
+      if(e.key === 'ArrowLeft' ){ e.preventDefault(); const prev = arr[(idx-1+arr.length) % arr.length]; prev.focus(); activate(prev); }
+    });
+  });
+})();
+
+/* ══════════════════════════════
+   SEASON 3 BAR — Animación con aria sync (fixes C4)
+══════════════════════════════ */
+(function(){
+  const bar     = document.getElementById('s3bar');
+  const barWrap = document.getElementById('s3bar-wrap');
+  if(!bar || !barWrap) return;
+
+  const TARGET = 65;
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        setTimeout(() => {
+          bar.style.width = TARGET + '%';
+          barWrap.setAttribute('aria-valuenow', TARGET); // aria sync
+          barWrap.setAttribute('aria-label', `Progreso de producción de Temporada 3: ${TARGET} por ciento`);
+        }, 400);
+        io.disconnect();
+      }
+    });
+  }, { threshold: .3 });
+  io.observe(barWrap);
+})();
+
+/* ══════════════════════════════
+   SCROLL — Un solo IntersectionObserver para todas las cards (fixes M6)
+══════════════════════════════ */
+function setupReveal(){
+  const CARD_SELECTORS = '.section.active .glass-card, .section.active .arc-card, .section.active .social-card, .section.active .volume-card, .section.active .watch-item, .section.active .season-card';
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        revealObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.05 });
+
+  document.querySelectorAll(CARD_SELECTORS).forEach((el, i) => {
+    if(el.dataset.revealed) return;
+    el.dataset.revealed = '1';
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = `opacity .55s var(--ease-smooth) ${i * .05}s, transform .55s var(--ease-smooth) ${i * .05}s`;
+    revealObserver.observe(el);
+  });
+
+  // Cards en secciones inactivas nunca quedan invisibles
+  document.querySelectorAll('.glass-card, .arc-card, .social-card, .volume-card, .watch-item, .season-card').forEach(el => {
+    const section = el.closest('.section');
+    if(section && !section.classList.contains('active') && !el.dataset.revealed){
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    }
+  });
+}
+
+setupReveal();
+
+/* ══════════════════════════════
+   NAV — Glow al hacer scroll
+══════════════════════════════ */
+(function(){
+  const glow = document.querySelector('.nav-glow');
+  window.addEventListener('scroll', () => {
+    glow.style.opacity = Math.min(window.scrollY / 200, 1);
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>
